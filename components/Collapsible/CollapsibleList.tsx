@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
 import CollapsibleItemWrapper from './CollapsibleItemWrapper';
 import {IProps as ICollapsibleItemProps} from './CollapsibleItem';
 
@@ -29,7 +28,7 @@ const CollapsibleList: React.FC<IProps> = ({children}) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <>
       {React.Children.map(children, (child, index) => (
         <CollapsibleItemWrapper
           {...child.props}
@@ -41,14 +40,8 @@ const CollapsibleList: React.FC<IProps> = ({children}) => {
           handlerToggleCollapsedState={handlerToggleCollapsedState}
         />
       ))}
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    position: 'relative',
-  },
-});
 
 export default CollapsibleList;
