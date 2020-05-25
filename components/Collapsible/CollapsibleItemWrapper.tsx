@@ -6,6 +6,7 @@ import {
   LayoutChangeEvent,
   Text,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native';
 
 export interface IProps {
@@ -25,8 +26,8 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
   children,
   isLast,
 }) => {
-  const toggleAnimationValue = useRef(new Animated.Value(0)).current;
   const prevIsOpened = useRef<boolean>(isOpened);
+  const [animatedValue, setAnimatedValue] = useState(0);
   const [contentHeight, setContentHeight] = useState<number>(0);
 
   const handleLayoutContentChanges = (event: LayoutChangeEvent): void => {
@@ -35,7 +36,7 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
     setContentHeight(height);
 
     if (isOpened) {
-      toggleAnimationValue.setValue(height);
+      setAnimatedValue(height);
     }
   };
 
@@ -45,12 +46,11 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
     }
 
     prevIsOpened.current = isOpened;
-    Animated.timing(toggleAnimationValue, {
-      toValue: isOpened ? contentHeight : 0,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-  }, [isOpened, contentHeight, toggleAnimationValue]);
+    LayoutAnimation.configureNext(
+      LayoutAnimation.create(500, 'easeOut', 'opacity'),
+    );
+    setAnimatedValue(isOpened ? contentHeight : 0);
+  }, [isOpened, contentHeight]);
 
   return (
     <>
@@ -61,8 +61,7 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
         style={styles.button}>
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
-      <Animated.View
-        style={{...styles.contentWrapper, height: toggleAnimationValue}}>
+      <Animated.View style={{...styles.contentWrapper, height: animatedValue}}>
         <View
           style={{...styles.content, borderBottomWidth: Number(isLast)}}
           onLayout={handleLayoutContentChanges}>

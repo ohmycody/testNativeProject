@@ -1,7 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Platform, UIManager} from 'react-native';
 import CollapsibleList from './components/Collapsible/CollapsibleList';
 import CollapsibleItem from './components/Collapsible/CollapsibleItem';
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const App = () => {
   return (
