@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {LayoutAnimation} from 'react-native';
 import CollapsibleItemWrapper from './CollapsibleItemWrapper';
 import {IProps as ICollapsibleItemProps} from './CollapsibleItem';
 
@@ -16,6 +17,9 @@ const CollapsibleList: React.FC<IProps> = ({children}) => {
   }, [children]);
 
   const handlerToggleCollapsedState = (index: number): void => {
+    LayoutAnimation.configureNext(
+      LayoutAnimation.create(500, 'easeOut', 'opacity'),
+    );
     setItemStates((states) => {
       return states.map((state, stateIndex) => {
         if (stateIndex === index) {

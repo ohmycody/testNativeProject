@@ -1,11 +1,5 @@
-import React, {useRef, useLayoutEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  LayoutAnimation,
-} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 export interface IProps {
   title: string;
@@ -23,38 +17,22 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
   handlerToggleCollapsedState,
   children,
   isLast,
-}) => {
-  const prevIsOpened = useRef<boolean>(isOpened);
-
-  useLayoutEffect(() => {
-    if (isOpened === prevIsOpened.current) {
-      return;
-    }
-
-    prevIsOpened.current = isOpened;
-
-    LayoutAnimation.configureNext(
-      LayoutAnimation.create(500, 'easeOut', 'opacity'),
-    );
-  }, [isOpened]);
-
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          handlerToggleCollapsedState(index);
-        }}
-        style={styles.button}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
-      {isOpened && (
-        <View style={{...styles.content, borderBottomWidth: Number(isLast)}}>
-          {children}
-        </View>
-      )}
-    </View>
-  );
-};
+}) => (
+  <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() => {
+        handlerToggleCollapsedState(index);
+      }}
+      style={styles.button}>
+      <Text style={styles.buttonText}>{title}</Text>
+    </TouchableOpacity>
+    {isOpened && (
+      <View style={{...styles.content, borderBottomWidth: Number(isLast)}}>
+        {children}
+      </View>
+    )}
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
