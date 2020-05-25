@@ -1,9 +1,7 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useLayoutEffect} from 'react';
 import {
   View,
-  Animated,
   StyleSheet,
-  LayoutChangeEvent,
   Text,
   TouchableOpacity,
   LayoutAnimation,
@@ -27,33 +25,21 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
   isLast,
 }) => {
   const prevIsOpened = useRef<boolean>(isOpened);
-  const [animatedValue, setAnimatedValue] = useState(0);
-  const [contentHeight, setContentHeight] = useState<number>(0);
 
-  const handleLayoutContentChanges = (event: LayoutChangeEvent): void => {
-    const {height} = event.nativeEvent.layout;
-
-    setContentHeight(height);
-
-    if (isOpened) {
-      setAnimatedValue(height);
-    }
-  };
-
-  useEffect((): void => {
+  useLayoutEffect(() => {
     if (isOpened === prevIsOpened.current) {
       return;
     }
 
     prevIsOpened.current = isOpened;
+
     LayoutAnimation.configureNext(
       LayoutAnimation.create(500, 'easeOut', 'opacity'),
     );
-    setAnimatedValue(isOpened ? contentHeight : 0);
-  }, [isOpened, contentHeight]);
+  }, [isOpened]);
 
   return (
-    <>
+    <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
           handlerToggleCollapsedState(index);
@@ -61,18 +47,19 @@ const CollapsibleItemWrapper: React.FC<IProps> = ({
         style={styles.button}>
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
-      <Animated.View style={{...styles.contentWrapper, height: animatedValue}}>
-        <View
-          style={{...styles.content, borderBottomWidth: Number(isLast)}}
-          onLayout={handleLayoutContentChanges}>
+      {isOpened && (
+        <View style={{...styles.content, borderBottomWidth: Number(isLast)}}>
           {children}
         </View>
-      </Animated.View>
-    </>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden',
+  },
   button: {
     backgroundColor: 'lightblue',
     padding: 5,
@@ -83,12 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
-  contentWrapper: {
-    position: 'relative',
-    overflow: 'hidden',
-  },
   content: {
-    position: 'absolute',
     padding: 20,
     borderBottomColor: 'lightblue',
   },
