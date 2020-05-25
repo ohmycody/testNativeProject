@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Platform, UIManager} from 'react-native';
+import {View, Text, Platform, UIManager, SafeAreaView} from 'react-native';
 import CollapsibleList from './components/Collapsible/CollapsibleList';
 import CollapsibleItem from './components/Collapsible/CollapsibleItem';
 
@@ -11,7 +11,7 @@ if (Platform.OS === 'android') {
 
 const App = () => {
   return (
-    <View style={styles.layout}>
+    <SafeAreaView>
       <CollapsibleList>
         <CollapsibleItem title="Collapsible Title 1">
           <View>
@@ -48,14 +48,8 @@ const App = () => {
           </View>
         </CollapsibleItem>
       </CollapsibleList>
-    </View>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  layout: {
-    marginTop: 60,
-  },
-});
 
 export default App;
