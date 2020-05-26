@@ -1,9 +1,17 @@
-import React, {useEffect} from 'react';
-import {View, Text, Platform, UIManager, SafeAreaView} from 'react-native';
-import {authorize} from 'react-native-app-auth';
-import {UNSPLASH_CLIENT_ID, UNSPLASH_CLIENT_SECRET} from 'react-native-dotenv';
-import CollapsibleList from './components/Collapsible/CollapsibleList';
-import CollapsibleItem from './components/Collapsible/CollapsibleItem';
+import 'react-native-gesture-handler';
+import React, {useReducer} from 'react';
+import {Platform, UIManager} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import AuthContext, {IAuthContext} from './contexts/AuthContext/AuthContext';
+import Home from './screens/Home/Home';
+import SignIn from './screens/SignIn/SignIn';
+import Profile from './screens/Profile/Profile';
+import authReducer, {
+  AUTH_ACTION_TYPES,
+} from './reducers/authReducer/authReducer';
+import {getAccessToken} from './api/services';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -11,69 +19,58 @@ if (Platform.OS === 'android') {
   }
 }
 
+const Stack = createStackNavigator();
+
 const App = () => {
-  useEffect(() => {
-    const getToken = async () => {
+  const [authState, dispatchAuth] = useReducer(authReducer, {
+    isLoading: true,
+    isSignout: false,
+    accessToken: null,
+  });
+  const authContext = React.useMemo((): IAuthContext => {
+    return {
+      signIn: async () => {
+        const accessToken = await getAccessToken();
+
+        dispatchAuth({type: AUTH_ACTION_TYPES.SIGN_IN, accessToken});
+      },
+      signOut: () => dispatchAuth({type: AUTH_ACTION_TYPES.SIGN_OUT}),
+      accessToken: authState.accessToken,
+    };
+  }, [authState.accessToken]);
+
+  React.useEffect(() => {
+    const runBootstrap = async (): Promise<void> => {
+      let accessToken;
+
       try {
-        const accessToken = await authorize({
-          serviceConfiguration: {
-            authorizationEndpoint: 'https://unsplash.com/oauth/authorize',
-            tokenEndpoint: 'https://unsplash.com/oauth/token',
-          },
-          clientId: UNSPLASH_CLIENT_ID,
-          clientSecret: UNSPLASH_CLIENT_SECRET,
-          redirectUrl: 'testnativeproject://oauth',
-          scopes: ['read_user', 'write_user'],
-          usePKCE: false,
-        });
-        console.warn(accessToken);
+        accessToken = await AsyncStorage.getItem('accessToken');
       } catch (e) {
-        console.error('ACCESS TOKEN ERROR', e);
+        console.error('AsyncStorage getting access token error', e);
+        return;
       }
+
+      dispatchAuth({type: AUTH_ACTION_TYPES.RESTORE_TOKEN, accessToken});
     };
 
-    getToken();
+    runBootstrap();
   }, []);
 
   return (
-    <SafeAreaView>
-      <CollapsibleList>
-        <CollapsibleItem title="Collapsible Title 1">
-          <View>
-            <Text>
-              Collapsible Text 1 ||| Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Pariatur a iusto, minus impedit distinctio
-              voluptatum error velit reprehenderit odit delectus dolorem enim
-              temporibus sapiente ad, aperiam repudiandae recusandae animi
-              ipsam!
-            </Text>
-          </View>
-        </CollapsibleItem>
-        <CollapsibleItem title="Collapsible Title 2" isOpened>
-          <View>
-            <Text>
-              Collapsible Text 2 ||| Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Pariatur a iusto, minus impedit distinctio
-              voluptatum error.
-            </Text>
-          </View>
-        </CollapsibleItem>
-        <CollapsibleItem title="Collapsible Title 3">
-          <View>
-            <Text>
-              Collapsible Text 3 ||| Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Pariatur a iusto, minus impedit distinctio
-              voluptatum error velit reprehenderit odit delectus dolorem enim
-              temporibus sapiente ad, aperiam repudiandae recusandae animi
-              ipsam! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Pariatur a iusto, minus impedit distinctio voluptatum error velit
-              reprehenderit odit delectus dolorem enim temporibus sapiente ad,
-              aperiam repudiandae recusandae animi ipsam!
-            </Text>
-          </View>
-        </CollapsibleItem>
-      </CollapsibleList>
-    </SafeAreaView>
+    <NavigationContainer>
+      <AuthContext.Provider value={authContext}>
+        <Stack.Navigator>
+          {authState.accessToken ? (
+            <>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="Profile" component={Profile} />
+            </>
+          ) : (
+            <Stack.Screen name="Sign in" component={SignIn} />
+          )}
+        </Stack.Navigator>
+      </AuthContext.Provider>
+    </NavigationContainer>
   );
 };
 

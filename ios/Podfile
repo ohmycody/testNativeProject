@@ -79,6 +79,8 @@ target 'testNativeProject' do
 
   pod 'react-native-uuid-generator', :path => '../node_modules/react-native-uuid-generator'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'testNativeProjectTests' do
     inherit! :complete
     # Pods for testing
