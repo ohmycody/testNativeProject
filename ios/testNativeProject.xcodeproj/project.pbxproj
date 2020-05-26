@@ -194,7 +194,6 @@
 				FFB2844E3C009EC11B8C86DB /* Pods-testNativeProject-tvOSTests.debug.xcconfig */,
 				08662FB5DA0ED508CFCF9775 /* Pods-testNativeProject-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
