@@ -1,4 +1,4 @@
-export interface IUserData {
+export interface IProfileData {
   id: string;
   username: string;
   first_name: string | null;

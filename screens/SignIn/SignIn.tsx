@@ -1,16 +1,20 @@
-import React, {useContext} from 'react';
-import {View, Text, Button} from 'react-native';
-import AuthContext from '../../contexts/AuthContext/AuthContext';
+import React from 'react';
+import {View, Button} from 'react-native';
+import {connect} from 'react-redux';
+import {thunkSignIn} from '../../store/auth/thunks';
 
-const SignIn: React.FC = () => {
-  const {signIn} = useContext(AuthContext);
+interface IProps {
+  signIn: () => void;
+}
 
+const SignIn: React.FC<IProps> = ({signIn}) => {
   return (
     <View>
-      <Text>SignIn</Text>
       <Button title="Sign in" onPress={signIn} />
     </View>
   );
 };
 
-export default SignIn;
+export default connect(null, {
+  signIn: thunkSignIn,
+})(SignIn);

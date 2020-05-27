@@ -1,35 +1,42 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
-import AuthContext, {
-  IAuthContext,
-} from '../../contexts/AuthContext/AuthContext';
-import {getUserData} from '../../api/services';
-import {IUserData} from '../../api/models';
+import {connect} from 'react-redux';
+import {AppState} from '../../store';
+import {thunkGetProfileData} from '../../store/profile/thunks';
+import {IProfileState} from '../../store/profile/types';
 
-const Profile: React.FC = () => {
-  const {accessToken} = useContext<IAuthContext>(AuthContext);
-  const [userData, setUserData] = useState<IUserData>();
+interface IProps {
+  profile: IProfileState;
+  getProfileData: () => void;
+}
 
+const Profile: React.FC<IProps> = ({
+  profile: {firstName, lastName, username, location, email},
+  getProfileData,
+}) => {
   useEffect(() => {
-    const fetchUserData = async () => {
-      const responseUserData = await getUserData(accessToken);
-
-      setUserData(responseUserData);
+    const fetchProfileData = async () => {
+      await getProfileData();
     };
 
-    fetchUserData();
-  }, [accessToken]);
+    fetchProfileData();
+  }, [getProfileData]);
 
   return (
     <View>
-      <Text>Profile</Text>
-      <Text>First Name: {userData?.first_name}</Text>
-      <Text>Last Name: {userData?.last_name}</Text>
-      <Text>Username: {userData?.username}</Text>
-      <Text>Location: {userData?.location}</Text>
-      <Text>Email: {userData?.email}</Text>
+      <Text>First Name: {firstName}</Text>
+      <Text>Last Name: {lastName}</Text>
+      <Text>Username: {username}</Text>
+      <Text>Location: {location}</Text>
+      <Text>Email: {email}</Text>
     </View>
   );
 };
 
-export default Profile;
+const mapStateToProps = (state: AppState) => ({
+  profile: state.profile,
+});
+
+export default connect(mapStateToProps, {
+  getProfileData: thunkGetProfileData,
+})(Profile);
