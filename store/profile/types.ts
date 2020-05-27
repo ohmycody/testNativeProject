@@ -5,12 +5,15 @@ export enum PROFILE_ACTION_TYPES {
 }
 
 export interface IProfileState {
-  id: string;
-  username: string;
-  firstName: string | null;
-  lastName: string | null;
-  location: string | null;
-  email: string;
+  profileData: {
+    id: string;
+    username: string;
+    firstName: string | null;
+    lastName: string | null;
+    location: string | null;
+    email: string;
+  };
+  isLoading: boolean;
 }
 
 export interface IGetProfileDataAction {

@@ -1,12 +1,15 @@
 import {PROFILE_ACTION_TYPES, IProfileState, ProfileActionType} from './types';
 
 const initialState: IProfileState = {
-  id: '',
-  username: '',
-  firstName: null,
-  lastName: null,
-  location: null,
-  email: '',
+  profileData: {
+    id: '',
+    username: '',
+    firstName: null,
+    lastName: null,
+    location: null,
+    email: '',
+  },
+  isLoading: true,
 };
 
 const profileReducer = (
@@ -17,12 +20,16 @@ const profileReducer = (
     case PROFILE_ACTION_TYPES.GET_PROFILE_DATA:
       return {
         ...state,
-        id: action.profileData.id,
-        username: action.profileData.username,
-        firstName: action.profileData.first_name,
-        lastName: action.profileData.last_name,
-        location: action.profileData.location,
-        email: action.profileData.email,
+        profileData: {
+          ...state.profileData,
+          id: action.profileData.id,
+          username: action.profileData.username,
+          firstName: action.profileData.first_name,
+          lastName: action.profileData.last_name,
+          location: action.profileData.location,
+          email: action.profileData.email,
+        },
+        isLoading: false,
       };
     default:
       return state;

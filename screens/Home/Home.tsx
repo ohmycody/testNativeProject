@@ -1,19 +1,20 @@
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {View, Button} from 'react-native';
+import {Button} from 'react-native';
+import Layout from '../../common/components/Layout/Layout';
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <Layout>
       <Button
         title="Profile"
         onPress={() => {
           navigation.navigate('Profile');
         }}
       />
-    </View>
+    </Layout>
   );
 };
 
