@@ -1,18 +1,21 @@
 import React from 'react';
 import {Button, ActivityIndicator} from 'react-native';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
 import {thunkSignIn} from '../../store/auth/thunks';
 import Layout from '../../common/components/Layout/Layout';
 import {AppState} from '../../store';
-import {IAuthState} from 'store/auth/types';
+import {IAuthState} from '../../store/auth/types';
 import ActivityIndicatorLayout from '../../common/components/ActivityIndicatorLayout/ActivityIndicatorLayout';
+import {PROFILE_ACTION_TYPES} from '../../store/profile/types';
 
-interface IProps {
-  auth: IAuthState;
-  signIn: () => void;
-}
+const SignIn: React.FC = () => {
+  const {isLoading}: IAuthState = useSelector((state: AppState) => state.auth);
+  const dispatch = useDispatch<
+    ThunkDispatch<AppState, undefined, Action<PROFILE_ACTION_TYPES>>
+  >();
 
-const SignIn: React.FC<IProps> = ({auth: {isLoading}, signIn}) => {
   return (
     <>
       {isLoading ? (
@@ -21,17 +24,11 @@ const SignIn: React.FC<IProps> = ({auth: {isLoading}, signIn}) => {
         </ActivityIndicatorLayout>
       ) : (
         <Layout>
-          <Button title="Sign in" onPress={signIn} />
+          <Button title="Sign in" onPress={() => dispatch(thunkSignIn())} />
         </Layout>
       )}
     </>
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps, {
-  signIn: thunkSignIn,
-})(SignIn);
+export default SignIn;

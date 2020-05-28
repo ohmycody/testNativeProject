@@ -1,31 +1,30 @@
 import React, {useEffect} from 'react';
 import {Text, ActivityIndicator, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
 import {AppState} from '../../store';
 import {thunkGetProfileData} from '../../store/profile/thunks';
-import {IProfileState} from '../../store/profile/types';
+import {IProfileState, PROFILE_ACTION_TYPES} from '../../store/profile/types';
 import Layout from '../../common/components/Layout/Layout';
 import ActivityIndicatorLayout from '../../common/components/ActivityIndicatorLayout/ActivityIndicatorLayout';
 
-interface IProps {
-  profile: IProfileState;
-  getProfileData: () => void;
-}
-
-const Profile: React.FC<IProps> = ({
-  profile: {
+const Profile: React.FC = () => {
+  const {
     profileData: {firstName, lastName, username, location, email},
     isLoading,
-  },
-  getProfileData,
-}) => {
+  }: IProfileState = useSelector((state: AppState) => state.profile);
+  const dispatch = useDispatch<
+    ThunkDispatch<AppState, null, Action<PROFILE_ACTION_TYPES>>
+  >();
+
   useEffect(() => {
     const fetchProfileData = async () => {
-      await getProfileData();
+      await dispatch(thunkGetProfileData());
     };
 
     fetchProfileData();
-  }, [getProfileData]);
+  }, [dispatch]);
 
   return (
     <>
@@ -60,10 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: AppState) => ({
-  profile: state.profile,
-});
-
-export default connect(mapStateToProps, {
-  getProfileData: thunkGetProfileData,
-})(Profile);
+export default Profile;

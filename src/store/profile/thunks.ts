@@ -1,15 +1,16 @@
 import {Action} from 'redux';
 import {ThunkAction} from 'redux-thunk';
-import {AppState} from '../../store';
+import {AppState} from '..';
 import {getProfileData} from './actions';
 import apiClient from '../../api/client';
 import endpoints from '../../api/endpoints';
+import {PROFILE_ACTION_TYPES} from './types';
 
 export const thunkGetProfileData = (): ThunkAction<
-  void,
+  Promise<void>,
   AppState,
   null,
-  Action
+  Action<PROFILE_ACTION_TYPES>
 > => async (dispatch, getState) => {
   try {
     const profileData = await apiClient(

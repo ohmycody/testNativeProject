@@ -10,13 +10,13 @@ interface IProps {
 const CollapsibleList: React.FC<IProps> = ({children}) => {
   const [itemStates, setItemStates] = useState<boolean[]>([]);
 
-  useEffect((): void => {
+  useEffect(() => {
     setItemStates(
       React.Children.map(children, (child) => !!child.props.isOpened),
     );
   }, [children]);
 
-  const handlerToggleCollapsedState = (index: number): void => {
+  const handlerToggleCollapsedState = (index: number) => {
     LayoutAnimation.configureNext(
       LayoutAnimation.create(500, 'easeOut', 'opacity'),
     );

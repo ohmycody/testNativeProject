@@ -1,9 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StyleProp, ViewStyle} from 'react-native';
 
 export interface IProps {
-  children: React.ReactNode | React.ReactNodeArray;
-  style?: {[name: string]: string | number};
+  style?: StyleProp<ViewStyle>;
 }
 
 const ActivityIndicatorLayout: React.FC<IProps> = ({children, style}) => (

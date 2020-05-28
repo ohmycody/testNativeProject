@@ -1,5 +1,5 @@
 import {Action} from 'redux';
-import {ThunkAction} from 'redux-thunk';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {authorize} from 'react-native-app-auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {signIn, restoreToken} from './actions';
@@ -21,22 +21,22 @@ const getAccessToken = async (): Promise<AccessTokenType> => {
 };
 
 export const thunkSignIn = (): ThunkAction<
-  void,
+  Promise<void>,
   AppState,
   null,
   Action
-> => async (dispatch) => {
+> => async (dispatch: ThunkDispatch<AppState, undefined, any>) => {
   const accessToken = await getAccessToken();
 
   dispatch(signIn(accessToken));
 };
 
 export const thunkRestoreToken = (): ThunkAction<
-  void,
+  Promise<void>,
   AppState,
   null,
   Action
-> => async (dispatch) => {
+> => async (dispatch: ThunkDispatch<AppState, undefined, any>) => {
   let accessToken;
 
   try {

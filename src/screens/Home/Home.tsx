@@ -1,11 +1,14 @@
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {Button} from 'react-native';
 import Layout from '../../common/components/Layout/Layout';
+import {RootStackParamList} from '../../Main';
 
-const Home: React.FC = () => {
-  const navigation = useNavigation();
+interface IProps {
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>;
+}
 
+const Home: React.FC<IProps> = ({navigation}) => {
   return (
     <Layout>
       <Button
