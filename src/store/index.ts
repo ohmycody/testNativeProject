@@ -1,24 +1,37 @@
+import {all} from 'redux-saga/effects';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
-import thunkMiddleware from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
 import authReducer from './auth/reducers';
 import profileReducer from './profile/reducers';
+import {watchSignInSaga, watchRestoreTokenSaga} from './auth/sagas';
+import {watchGetProfileDataSaga} from './profile/sagas';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
 });
 
+function* rootSaga() {
+  yield all([
+    watchSignInSaga(),
+    watchRestoreTokenSaga(),
+    watchGetProfileDataSaga(),
+  ]);
+}
+
 export type AppState = ReturnType<typeof rootReducer>;
 
 function configureStore() {
-  const middlewares = [thunkMiddleware];
-  const middleWareEnhancer = applyMiddleware(...middlewares);
+  const sagaMiddleware = createSagaMiddleware();
+  const middlewareEnhancer = applyMiddleware(sagaMiddleware);
 
   const store = createStore(
     rootReducer,
-    composeWithDevTools(middleWareEnhancer),
+    composeWithDevTools(middlewareEnhancer),
   );
+
+  sagaMiddleware.run(rootSaga);
 
   return store;
 }

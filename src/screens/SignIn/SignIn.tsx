@@ -1,20 +1,16 @@
 import React from 'react';
 import {Button, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {ThunkDispatch} from 'redux-thunk';
-import {Action} from 'redux';
-import {thunkSignIn} from '../../store/auth/thunks';
+import {Action, Dispatch} from 'redux';
 import Layout from '../../common/components/Layout/Layout';
 import {AppState} from '../../store';
-import {IAuthState} from '../../store/auth/types';
+import {IAuthState, AUTH_ACTION_TYPES} from '../../store/auth/types';
 import ActivityIndicatorLayout from '../../common/components/ActivityIndicatorLayout/ActivityIndicatorLayout';
-import {PROFILE_ACTION_TYPES} from '../../store/profile/types';
+import {fetchSgnIn} from '../../store/auth/actions';
 
 const SignIn: React.FC = () => {
   const {isLoading}: IAuthState = useSelector((state: AppState) => state.auth);
-  const dispatch = useDispatch<
-    ThunkDispatch<AppState, undefined, Action<PROFILE_ACTION_TYPES>>
-  >();
+  const dispatch = useDispatch<Dispatch<Action<AUTH_ACTION_TYPES>>>();
 
   return (
     <>
@@ -24,7 +20,7 @@ const SignIn: React.FC = () => {
         </ActivityIndicatorLayout>
       ) : (
         <Layout>
-          <Button title="Sign in" onPress={() => dispatch(thunkSignIn())} />
+          <Button title="Sign in" onPress={() => dispatch(fetchSgnIn())} />
         </Layout>
       )}
     </>

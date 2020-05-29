@@ -12,20 +12,15 @@ const apiClient = async (
   accessToken: AccessTokenType,
   method: API_METHODS = API_METHODS.GET,
 ): Promise<any> => {
-  try {
-    const response: any = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const responseData = await response.json();
+  const response: any = await fetch(url, {
+    method,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const responseData = await response.json();
 
-    return responseData;
-  } catch (e) {
-    console.error('Request profile data error', e);
-    return null;
-  }
+  return responseData;
 };
 
 export default apiClient;

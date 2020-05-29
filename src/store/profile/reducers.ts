@@ -20,6 +20,11 @@ const profileReducer = (
     case PROFILE_ACTION_TYPES.GET_PROFILE_DATA:
       return {
         ...state,
+        isLoading: true,
+      };
+    case PROFILE_ACTION_TYPES.GET_PROFILE_DATA_SUCCEEDED:
+      return {
+        ...state,
         profileData: {
           ...state.profileData,
           id: action.profileData.id,
@@ -29,6 +34,11 @@ const profileReducer = (
           location: action.profileData.location,
           email: action.profileData.email,
         },
+        isLoading: false,
+      };
+    case PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED:
+      return {
+        ...state,
         isLoading: false,
       };
     default:

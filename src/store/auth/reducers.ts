@@ -2,7 +2,6 @@ import {IAuthState, AuthActionType, AUTH_ACTION_TYPES} from './types';
 
 const initialState: IAuthState = {
   isLoading: true,
-  isSignout: false,
   accessToken: null,
 };
 
@@ -14,20 +13,34 @@ const authReducer = (
     case AUTH_ACTION_TYPES.RESTORE_TOKEN:
       return {
         ...state,
+        isLoading: true,
+      };
+    case AUTH_ACTION_TYPES.RESTORE_TOKEN_SUCCEEDED:
+      return {
+        ...state,
         accessToken: action.accessToken,
+        isLoading: false,
+      };
+    case AUTH_ACTION_TYPES.RESTORE_TOKEN_FAILED:
+      return {
+        ...state,
         isLoading: false,
       };
     case AUTH_ACTION_TYPES.SIGN_IN:
       return {
         ...state,
-        isSignout: false,
-        accessToken: action.accessToken,
+        isLoading: true,
       };
-    case AUTH_ACTION_TYPES.SIGN_OUT:
+    case AUTH_ACTION_TYPES.SIGN_IN_SUCCEEDED:
       return {
         ...state,
-        isSignout: true,
-        accessToken: null,
+        accessToken: action.accessToken,
+        isLoading: false,
+      };
+    case AUTH_ACTION_TYPES.SIGN_IN_FAILED:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;
