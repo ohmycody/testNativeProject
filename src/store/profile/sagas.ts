@@ -18,7 +18,8 @@ function* getProfileDataSaga(): SagaIterator {
   try {
     const profileData = yield call<(...args: any[]) => Promise<IProfileData>>(
       apiClient,
-      [endpoints.profile, accessToken],
+      endpoints.profile,
+      accessToken,
     );
 
     yield put(getProfileDataSucceeded(profileData));

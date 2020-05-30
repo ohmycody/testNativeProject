@@ -17,12 +17,16 @@ function* signInSaga(): SagaIterator {
   yield put(signIn());
 
   try {
-    const accessToken = yield call<(...args: any[]) => Promise<any>>(
-      authorize,
-      [authorizeConfig],
+    const {accessToken} = yield call<(...args: any[]) => Promise<any>>(
+      (config) => authorize(config),
+      authorizeConfig,
     );
 
-    AsyncStorage.setItem('accessToken', accessToken);
+    yield call<(...args: any[]) => Promise<void>>(
+      (key: string, value: string) => AsyncStorage.setItem(key, value),
+      'accessToken',
+      accessToken,
+    );
 
     yield put(signInSucceeded(accessToken));
   } catch (e) {
@@ -37,7 +41,7 @@ function* restoreTokenSaga(): SagaIterator {
   try {
     const accessToken = yield call<(...args: any[]) => Promise<string | null>>(
       (itemName: string) => AsyncStorage.getItem(itemName),
-      ['accessToken'],
+      'accessToken',
     );
 
     yield put(restoreTokenSucceeded(accessToken));
