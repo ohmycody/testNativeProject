@@ -1,7 +1,7 @@
 import {AUTH_ACTION_TYPES, AccessTokenType} from './types';
 
 export const fetchRestoreToken = () => ({
-  type: AUTH_ACTION_TYPES.FETCH_RESTORE_TOKEN,
+  type: AUTH_ACTION_TYPES.RESTORE_TOKEN_REQUESTED,
 });
 
 export const restoreToken = () => ({
@@ -18,7 +18,7 @@ export const restoreTokenFailed = () => ({
 });
 
 export const fetchSgnIn = () => ({
-  type: AUTH_ACTION_TYPES.FETCH_SIGN_IN,
+  type: AUTH_ACTION_TYPES.SIGN_IN_REQUESTED,
 });
 
 export const signIn = () => ({

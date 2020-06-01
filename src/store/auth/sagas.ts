@@ -1,4 +1,4 @@
-import {put, call, takeEvery} from 'redux-saga/effects';
+import {put, call, takeLatest, all} from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
 import {authorize} from 'react-native-app-auth';
 import {SagaIterator} from 'redux-saga';
@@ -13,14 +13,15 @@ import {
 import {AUTH_ACTION_TYPES} from './types';
 import {authorizeConfig} from '../../api/configs';
 
-function* signInSaga(): SagaIterator {
+export function* signInSaga(): SagaIterator {
   yield put(signIn());
 
   try {
-    const {accessToken} = yield call<(...args: any[]) => Promise<any>>(
+    const response = yield call<(...args: any[]) => Promise<any>>(
       (config) => authorize(config),
       authorizeConfig,
     );
+    const accessToken = response?.accessToken;
 
     yield call<(...args: any[]) => Promise<void>>(
       (key: string, value: string) => AsyncStorage.setItem(key, value),
@@ -35,7 +36,7 @@ function* signInSaga(): SagaIterator {
   }
 }
 
-function* restoreTokenSaga(): SagaIterator {
+export function* restoreTokenSaga(): SagaIterator {
   yield put(restoreToken());
 
   try {
@@ -51,10 +52,14 @@ function* restoreTokenSaga(): SagaIterator {
   }
 }
 
-export function* watchSignInSaga(): SagaIterator {
-  yield takeEvery(AUTH_ACTION_TYPES.FETCH_SIGN_IN, signInSaga);
+function* watchSignInSaga(): SagaIterator {
+  yield takeLatest(AUTH_ACTION_TYPES.SIGN_IN_REQUESTED, signInSaga);
 }
 
-export function* watchRestoreTokenSaga(): SagaIterator {
-  yield takeEvery(AUTH_ACTION_TYPES.FETCH_RESTORE_TOKEN, restoreTokenSaga);
+function* watchRestoreTokenSaga(): SagaIterator {
+  yield takeLatest(AUTH_ACTION_TYPES.RESTORE_TOKEN_REQUESTED, restoreTokenSaga);
+}
+
+export function* watchAuthSagas() {
+  yield all([watchSignInSaga(), watchRestoreTokenSaga()]);
 }

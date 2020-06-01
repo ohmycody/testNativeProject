@@ -6,7 +6,7 @@ import {AppState} from '../../store';
 import {IProfileState, PROFILE_ACTION_TYPES} from '../../store/profile/types';
 import Layout from '../../common/components/Layout/Layout';
 import ActivityIndicatorLayout from '../../common/components/ActivityIndicatorLayout/ActivityIndicatorLayout';
-import {getProfileData} from '../../store/profile/actions';
+import {getProfileDataRequested} from '../../store/profile/actions';
 
 const Profile: React.FC = () => {
   const {
@@ -16,7 +16,7 @@ const Profile: React.FC = () => {
   const dispatch = useDispatch<Dispatch<Action<PROFILE_ACTION_TYPES>>>();
 
   useEffect(() => {
-    dispatch(getProfileData());
+    dispatch(getProfileDataRequested());
   }, [dispatch]);
 
   return (

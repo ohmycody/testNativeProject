@@ -1,7 +1,7 @@
 import {IProfileData} from '../../api/models';
 
 export enum PROFILE_ACTION_TYPES {
-  FETCH_PROFILE_DATA = 'FETCH_PROFILE_DATA',
+  GET_PROFILE_DATA_REQUESTED = 'GET_PROFILE_DATA_REQUESTED',
   GET_PROFILE_DATA = 'GET_PROFILE_DATA',
   GET_PROFILE_DATA_SUCCEEDED = 'GET_PROFILE_DATA_SUCCEEDED',
   GET_PROFILE_DATA_FAILED = 'GET_PROFILE_DATA_FAILED',
@@ -19,8 +19,8 @@ export interface IProfileState {
   isLoading: boolean;
 }
 
-export interface IFetchProfileDataAction {
-  type: PROFILE_ACTION_TYPES.FETCH_PROFILE_DATA;
+export interface IGetProfileDataRequestedAction {
+  type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_REQUESTED;
 }
 
 export interface IGetProfileDataAction {
@@ -37,7 +37,7 @@ export interface IGetProfileDataFailedAction {
 }
 
 export type ProfileActionType =
-  | IFetchProfileDataAction
+  | IGetProfileDataRequestedAction
   | IGetProfileDataAction
   | IGetProfileDataSucceededAction
   | IGetProfileDataFailedAction;

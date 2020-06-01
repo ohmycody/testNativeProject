@@ -1,11 +1,11 @@
 export type AccessTokenType = string | null;
 
 export enum AUTH_ACTION_TYPES {
-  FETCH_RESTORE_TOKEN = 'FETCH_RESTORE_TOKEN',
+  RESTORE_TOKEN_REQUESTED = 'RESTORE_TOKEN_REQUESTED',
   RESTORE_TOKEN = 'RESTORE_TOKEN',
   RESTORE_TOKEN_SUCCEEDED = 'RESTORE_TOKEN_SUCCEEDED',
   RESTORE_TOKEN_FAILED = 'RESTORE_TOKEN_FAILED',
-  FETCH_SIGN_IN = 'FETCH_SIGN_IN',
+  SIGN_IN_REQUESTED = 'SIGN_IN_REQUESTED',
   SIGN_IN = 'SIGN_IN',
   SIGN_IN_SUCCEEDED = 'SIGN_IN_SUCCEEDED',
   SIGN_IN_FAILED = 'SIGN_IN_FAILED',
@@ -17,7 +17,7 @@ export interface IAuthState {
 }
 
 export interface IFetchRestoreTokenAction {
-  type: AUTH_ACTION_TYPES.FETCH_RESTORE_TOKEN;
+  type: AUTH_ACTION_TYPES.RESTORE_TOKEN_REQUESTED;
 }
 
 export interface IRestoreTokenAction {
@@ -34,7 +34,7 @@ export interface IRestoreTokenFailedAction {
 }
 
 export interface IFetchSignInAction {
-  type: AUTH_ACTION_TYPES.FETCH_SIGN_IN;
+  type: AUTH_ACTION_TYPES.SIGN_IN_REQUESTED;
 }
 
 export interface ISignInAction {

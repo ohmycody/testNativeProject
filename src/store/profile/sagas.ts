@@ -1,13 +1,19 @@
-import {put, call, takeLatest, select} from 'redux-saga/effects';
+import {put, call, takeLatest, select, all} from 'redux-saga/effects';
 import {SagaIterator} from 'redux-saga';
 import {IProfileData} from '../../api/models';
 import endpoints from '../../api/endpoints';
 import {AppState} from '..';
 import {PROFILE_ACTION_TYPES} from './types';
 import apiClient from '../../api/client';
-import {getProfileDataSucceeded, getProfileDataFailed} from './actions';
+import {
+  getProfileDataSucceeded,
+  getProfileDataFailed,
+  getProfileData,
+} from './actions';
 
-function* getProfileDataSaga(): SagaIterator {
+export function* getProfileDataSaga(): SagaIterator {
+  yield put(getProfileData());
+
   const accessToken = yield select((state: AppState) => state.auth.accessToken);
 
   if (accessToken === null) {
@@ -29,6 +35,13 @@ function* getProfileDataSaga(): SagaIterator {
   }
 }
 
-export function* watchGetProfileDataSaga(): SagaIterator {
-  yield takeLatest(PROFILE_ACTION_TYPES.GET_PROFILE_DATA, getProfileDataSaga);
+function* watchGetProfileDataSaga(): SagaIterator {
+  yield takeLatest(
+    PROFILE_ACTION_TYPES.GET_PROFILE_DATA_REQUESTED,
+    getProfileDataSaga,
+  );
+}
+
+export function* watchProfileSagas() {
+  yield all([watchGetProfileDataSaga()]);
 }

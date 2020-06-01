@@ -4,8 +4,8 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import authReducer from './auth/reducers';
 import profileReducer from './profile/reducers';
-import {watchSignInSaga, watchRestoreTokenSaga} from './auth/sagas';
-import {watchGetProfileDataSaga} from './profile/sagas';
+import {watchAuthSagas} from './auth/sagas';
+import {watchProfileSagas} from './profile/sagas';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,11 +13,7 @@ const rootReducer = combineReducers({
 });
 
 function* rootSaga() {
-  yield all([
-    watchSignInSaga(),
-    watchRestoreTokenSaga(),
-    watchGetProfileDataSaga(),
-  ]);
+  yield all([watchAuthSagas(), watchProfileSagas()]);
 }
 
 export type AppState = ReturnType<typeof rootReducer>;
