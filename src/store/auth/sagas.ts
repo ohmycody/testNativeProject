@@ -52,14 +52,9 @@ export function* restoreTokenSaga(): SagaIterator {
   }
 }
 
-function* watchSignInSaga(): SagaIterator {
-  yield takeLatest(AUTH_ACTION_TYPES.SIGN_IN_REQUESTED, signInSaga);
-}
-
-function* watchRestoreTokenSaga(): SagaIterator {
-  yield takeLatest(AUTH_ACTION_TYPES.RESTORE_TOKEN_REQUESTED, restoreTokenSaga);
-}
-
 export function* watchAuthSagas() {
-  yield all([watchSignInSaga(), watchRestoreTokenSaga()]);
+  yield all([
+    takeLatest(AUTH_ACTION_TYPES.SIGN_IN_REQUESTED, signInSaga),
+    takeLatest(AUTH_ACTION_TYPES.RESTORE_TOKEN_REQUESTED, restoreTokenSaga),
+  ]);
 }

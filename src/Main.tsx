@@ -9,7 +9,7 @@ import SignIn from './screens/SignIn/SignIn';
 import Profile from './screens/Profile/Profile';
 import {AppState} from './store';
 import {IAuthState, AUTH_ACTION_TYPES} from './store/auth/types';
-import {fetchRestoreToken} from './store/auth/actions';
+import {restoreTokenRequested} from './store/auth/actions';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -32,7 +32,7 @@ const Main: React.FC = () => {
   const dispatch = useDispatch<Dispatch<Action<AUTH_ACTION_TYPES>>>();
 
   React.useEffect(() => {
-    dispatch(fetchRestoreToken());
+    dispatch(restoreTokenRequested());
   }, [dispatch]);
 
   return (

@@ -6,7 +6,7 @@ import Layout from '../../common/components/Layout/Layout';
 import {AppState} from '../../store';
 import {IAuthState, AUTH_ACTION_TYPES} from '../../store/auth/types';
 import ActivityIndicatorLayout from '../../common/components/ActivityIndicatorLayout/ActivityIndicatorLayout';
-import {fetchSgnIn} from '../../store/auth/actions';
+import {signInRequested} from '../../store/auth/actions';
 
 const SignIn: React.FC = () => {
   const {isLoading}: IAuthState = useSelector((state: AppState) => state.auth);
@@ -20,7 +20,7 @@ const SignIn: React.FC = () => {
         </ActivityIndicatorLayout>
       ) : (
         <Layout>
-          <Button title="Sign in" onPress={() => dispatch(fetchSgnIn())} />
+          <Button title="Sign in" onPress={() => dispatch(signInRequested())} />
         </Layout>
       )}
     </>

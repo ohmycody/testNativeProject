@@ -35,13 +35,11 @@ export function* getProfileDataSaga(): SagaIterator {
   }
 }
 
-function* watchGetProfileDataSaga(): SagaIterator {
-  yield takeLatest(
-    PROFILE_ACTION_TYPES.GET_PROFILE_DATA_REQUESTED,
-    getProfileDataSaga,
-  );
-}
-
 export function* watchProfileSagas() {
-  yield all([watchGetProfileDataSaga()]);
+  yield all([
+    takeLatest(
+      PROFILE_ACTION_TYPES.GET_PROFILE_DATA_REQUESTED,
+      getProfileDataSaga,
+    ),
+  ]);
 }
