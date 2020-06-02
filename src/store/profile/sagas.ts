@@ -1,5 +1,4 @@
 import {put, call, takeLatest, select, all} from 'redux-saga/effects';
-import {SagaIterator} from 'redux-saga';
 import {IProfileData} from '../../api/models';
 import endpoints from '../../api/endpoints';
 import {AppState} from '..';
@@ -11,7 +10,7 @@ import {
   getProfileData,
 } from './actions';
 
-export function* getProfileDataSaga(): SagaIterator {
+export function* getProfileDataSaga() {
   yield put(getProfileData());
 
   const accessToken = yield select((state: AppState) => state.auth.accessToken);

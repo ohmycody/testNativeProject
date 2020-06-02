@@ -1,7 +1,6 @@
 import {put, call, takeLatest, all} from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
 import {authorize} from 'react-native-app-auth';
-import {SagaIterator} from 'redux-saga';
 import {
   restoreTokenSucceeded,
   signInSucceeded,
@@ -13,7 +12,7 @@ import {
 import {AUTH_ACTION_TYPES} from './types';
 import {authorizeConfig} from '../../api/configs';
 
-export function* signInSaga(): SagaIterator {
+export function* signInSaga() {
   yield put(signIn());
 
   try {
@@ -36,7 +35,7 @@ export function* signInSaga(): SagaIterator {
   }
 }
 
-export function* restoreTokenSaga(): SagaIterator {
+export function* restoreTokenSaga() {
   yield put(restoreToken());
 
   try {
