@@ -17,13 +17,13 @@ export function* signInSaga() {
 
   try {
     const response = yield call<(...args: any[]) => Promise<any>>(
-      (config) => authorize(config),
+      authorize,
       authorizeConfig,
     );
     const accessToken = response?.accessToken;
 
     yield call<(...args: any[]) => Promise<void>>(
-      (key: string, value: string) => AsyncStorage.setItem(key, value),
+      AsyncStorage.setItem,
       'accessToken',
       accessToken,
     );
@@ -40,7 +40,7 @@ export function* restoreTokenSaga() {
 
   try {
     const accessToken = yield call<(...args: any[]) => Promise<string | null>>(
-      (itemName: string) => AsyncStorage.getItem(itemName),
+      AsyncStorage.getItem,
       'accessToken',
     );
 
