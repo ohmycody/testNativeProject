@@ -17,10 +17,15 @@ const profileReducer = (
   action: ProfileActionType,
 ): IProfileState => {
   switch (action.type) {
-    case PROFILE_ACTION_TYPES.GET_PROFILE_DATA:
+    case PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA:
       return {
         ...state,
         isLoading: true,
+      };
+    case PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED:
+      return {
+        ...state,
+        isLoading: false,
       };
     case PROFILE_ACTION_TYPES.GET_PROFILE_DATA_SUCCEEDED:
       return {
@@ -36,10 +41,13 @@ const profileReducer = (
         },
         isLoading: false,
       };
-    case PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED:
+    case PROFILE_ACTION_TYPES.SET_PROFILE_FIRST_NAME:
       return {
         ...state,
-        isLoading: false,
+        profileData: {
+          ...state.profileData,
+          firstName: action.firstName,
+        },
       };
     default:
       return state;

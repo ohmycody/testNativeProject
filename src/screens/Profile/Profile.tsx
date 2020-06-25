@@ -1,12 +1,23 @@
 import React, {useEffect} from 'react';
-import {Text, ActivityIndicator, StyleSheet} from 'react-native';
+import {
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Button,
+  TextInput,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Action, Dispatch} from 'redux';
 import {AppState} from '../../store';
 import {IProfileState, PROFILE_ACTION_TYPES} from '../../store/profile/types';
 import Layout from '../../common/components/Layout/Layout';
 import ActivityIndicatorLayout from '../../common/components/ActivityIndicatorLayout/ActivityIndicatorLayout';
-import {getProfileDataRequested} from '../../store/profile/actions';
+import {
+  getProfileDataRequested,
+  setProfileFirstName,
+  setProfileDataRequested,
+} from '../../store/profile/actions';
 
 const Profile: React.FC = () => {
   const {
@@ -27,11 +38,25 @@ const Profile: React.FC = () => {
         </ActivityIndicatorLayout>
       ) : (
         <Layout>
-          <Text style={styles.item}>First Name: {firstName}</Text>
+          {/* Add inputs for all fields */}
+          <View style={styles.item}>
+            <Text style={styles.itemText}>First Name:</Text>
+            <TextInput
+              style={styles.itemInput}
+              value={firstName || ''}
+              onChange={(e) =>
+                dispatch(setProfileFirstName(e.nativeEvent.text))
+              }
+            />
+          </View>
           <Text style={styles.item}>Last Name: {lastName}</Text>
           <Text style={styles.item}>Username: {username}</Text>
           <Text style={styles.item}>Location: {location}</Text>
           <Text style={[styles.item, styles.itemLast]}>Email: {email}</Text>
+          <Button
+            title="Save"
+            onPress={() => dispatch(setProfileDataRequested())}
+          />
         </Layout>
       )}
     </>
@@ -44,11 +69,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   item: {
-    fontSize: 18,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   itemLast: {
     marginBottom: 0,
+  },
+  itemText: {
+    paddingRight: 5,
+    fontSize: 18,
+    lineHeight: 24,
+  },
+  itemInput: {
+    padding: 1,
+    fontSize: 18,
+    lineHeight: 24,
+    color: 'black',
   },
 });
 

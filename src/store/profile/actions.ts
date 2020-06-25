@@ -5,8 +5,16 @@ export const getProfileDataRequested = () => ({
   type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_REQUESTED,
 });
 
-export const getProfileData = () => ({
-  type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA,
+export const setProfileDataRequested = () => ({
+  type: PROFILE_ACTION_TYPES.SET_PROFILE_DATA_REQUESTED,
+});
+
+export const processProfileData = () => ({
+  type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA,
+});
+
+export const processProfileDataFinished = () => ({
+  type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED,
 });
 
 export const getProfileDataSucceeded = (profileData: IProfileData) => ({
@@ -14,6 +22,7 @@ export const getProfileDataSucceeded = (profileData: IProfileData) => ({
   profileData,
 });
 
-export const getProfileDataFailed = () => ({
-  type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED,
+export const setProfileFirstName = (firstName: string) => ({
+  type: PROFILE_ACTION_TYPES.SET_PROFILE_FIRST_NAME,
+  firstName,
 });

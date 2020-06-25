@@ -2,9 +2,11 @@ import {IProfileData} from '../../api/models';
 
 export enum PROFILE_ACTION_TYPES {
   GET_PROFILE_DATA_REQUESTED = 'GET_PROFILE_DATA_REQUESTED',
-  GET_PROFILE_DATA = 'GET_PROFILE_DATA',
+  SET_PROFILE_DATA_REQUESTED = 'SET_PROFILE_DATA_REQUESTED',
   GET_PROFILE_DATA_SUCCEEDED = 'GET_PROFILE_DATA_SUCCEEDED',
-  GET_PROFILE_DATA_FAILED = 'GET_PROFILE_DATA_FAILED',
+  PROCESS_PROFILE_DATA = 'PROCESS_PROFILE_DATA',
+  PROCESS_PROFILE_DATA_FINISHED = 'PROCESS_PROFILE_DATA_FINISHED',
+  SET_PROFILE_FIRST_NAME = 'SET_PROFILE_FIRST_NAME',
 }
 
 export interface IProfileState {
@@ -23,8 +25,12 @@ export interface IGetProfileDataRequestedAction {
   type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_REQUESTED;
 }
 
+export interface ISetProfileDataRequestedAction {
+  type: PROFILE_ACTION_TYPES.SET_PROFILE_DATA_REQUESTED;
+}
+
 export interface IGetProfileDataAction {
-  type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA;
+  type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA;
 }
 
 export interface IGetProfileDataSucceededAction {
@@ -32,12 +38,19 @@ export interface IGetProfileDataSucceededAction {
   profileData: IProfileData;
 }
 
-export interface IGetProfileDataFailedAction {
-  type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED;
+export interface IGetProfileDataFinishedAction {
+  type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED;
+}
+
+export interface ISetProfileFirstNameAction {
+  type: PROFILE_ACTION_TYPES.SET_PROFILE_FIRST_NAME;
+  firstName: string;
 }
 
 export type ProfileActionType =
+  | ISetProfileDataRequestedAction
   | IGetProfileDataRequestedAction
   | IGetProfileDataAction
   | IGetProfileDataSucceededAction
-  | IGetProfileDataFailedAction;
+  | IGetProfileDataFinishedAction
+  | ISetProfileFirstNameAction;

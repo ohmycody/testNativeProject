@@ -1,9 +1,9 @@
 import {PROFILE_ACTION_TYPES} from '../types';
 import {
   getProfileDataRequested,
-  getProfileData,
+  processProfileData,
   getProfileDataSucceeded,
-  getProfileDataFailed,
+  processProfileDataFinished,
 } from '../actions';
 
 const profileData = {
@@ -23,8 +23,8 @@ describe('Profile actions', () => {
   });
 
   it('should create an action to GET_PROFILE_DATA', () => {
-    expect(getProfileData()).toEqual({
-      type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA,
+    expect(processProfileData()).toEqual({
+      type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA,
     });
   });
 
@@ -36,8 +36,8 @@ describe('Profile actions', () => {
   });
 
   it('should create an action to GET_PROFILE_DATA_FAILED', () => {
-    expect(getProfileDataFailed()).toEqual({
-      type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED,
+    expect(processProfileDataFinished()).toEqual({
+      type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED,
     });
   });
 });

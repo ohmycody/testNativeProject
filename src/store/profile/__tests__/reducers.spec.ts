@@ -19,7 +19,7 @@ describe('profileReducer', () => {
           isLoading: false,
         },
         {
-          type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA,
+          type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA,
         },
       ),
     ).toEqual({
@@ -68,7 +68,7 @@ describe('profileReducer', () => {
           isLoading: true,
         },
         {
-          type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED,
+          type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED,
         },
       ),
     ).toEqual({

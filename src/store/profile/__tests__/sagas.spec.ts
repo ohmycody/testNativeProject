@@ -9,7 +9,9 @@ describe('Getting profile data flow is successful', () => {
   const it = sagaTestingHelper(getProfileDataSaga());
 
   it('should dispatch GET_PROFILE_DATA action', (result) => {
-    expect(result).toEqual(put({type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA}));
+    expect(result).toEqual(
+      put({type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA}),
+    );
   });
 
   it('should get access token from store', (result) => {
@@ -56,7 +58,9 @@ describe('Getting profile data flow is failed by empty access token', () => {
   const it = sagaTestingHelper(getProfileDataSaga());
 
   it('should dispatch GET_PROFILE_DATA action', (result) => {
-    expect(result).toEqual(put({type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA}));
+    expect(result).toEqual(
+      put({type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA}),
+    );
   });
 
   it('should get access token from store', (result) => {
@@ -70,7 +74,7 @@ describe('Getting profile data flow is failed by empty access token', () => {
   it('should dispatch GET_PROFILE_DATA_FAILED action', (result) => {
     expect(result).toEqual(
       put({
-        type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED,
+        type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED,
       }),
     );
   });
@@ -80,7 +84,9 @@ describe('Getting profile data flow is failed by profileData request', () => {
   const it = sagaTestingHelper(getProfileDataSaga());
 
   it('should dispatch GET_PROFILE_DATA action', (result) => {
-    expect(result).toEqual(put({type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA}));
+    expect(result).toEqual(
+      put({type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA}),
+    );
   });
 
   it('should get access token from store', (result) => {
@@ -102,7 +108,7 @@ describe('Getting profile data flow is failed by profileData request', () => {
   it('should dispatch GET_PROFILE_DATA_FAILED action', (result) => {
     expect(result).toEqual(
       put({
-        type: PROFILE_ACTION_TYPES.GET_PROFILE_DATA_FAILED,
+        type: PROFILE_ACTION_TYPES.PROCESS_PROFILE_DATA_FINISHED,
       }),
     );
   });

@@ -10,13 +10,20 @@ export enum API_METHODS {
 const apiClient = async (
   url: string,
   accessToken: AccessTokenType,
-  method: API_METHODS = API_METHODS.GET,
+  method: API_METHODS,
+  data?: {[key: string]: string},
 ): Promise<any> => {
+  const body =
+    method === API_METHODS.POST || method === API_METHODS.PUT
+      ? {body: JSON.stringify(data)}
+      : {};
   const response: any = await fetch(url, {
     method,
     headers: {
       Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
     },
+    ...body,
   });
   const responseData = await response.json();
 
