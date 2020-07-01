@@ -9,15 +9,17 @@ export enum PROFILE_ACTION_TYPES {
   SET_PROFILE_FIRST_NAME = 'SET_PROFILE_FIRST_NAME',
 }
 
+export interface IProfileStateData {
+  id: string;
+  username: string;
+  firstName: string | null;
+  lastName: string | null;
+  location: string | null;
+  email: string;
+}
+
 export interface IProfileState {
-  profileData: {
-    id: string;
-    username: string;
-    firstName: string | null;
-    lastName: string | null;
-    location: string | null;
-    email: string;
-  };
+  profileData: IProfileStateData;
   isLoading: boolean;
 }
 

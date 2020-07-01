@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Text,
   ActivityIndicator,
   StyleSheet,
   Button,
   TextInput,
-  View,
+  Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Action, Dispatch} from 'redux';
@@ -26,6 +27,8 @@ const Profile: React.FC = () => {
   }: IProfileState = useSelector((state: AppState) => state.profile);
   const dispatch = useDispatch<Dispatch<Action<PROFILE_ACTION_TYPES>>>();
 
+  const firstNameInputRef = useRef<TextInput>(null);
+
   useEffect(() => {
     dispatch(getProfileDataRequested());
   }, [dispatch]);
@@ -39,16 +42,21 @@ const Profile: React.FC = () => {
       ) : (
         <Layout>
           {/* Add inputs for all fields */}
-          <View style={styles.item}>
-            <Text style={styles.itemText}>First Name:</Text>
-            <TextInput
-              style={styles.itemInput}
-              value={firstName || ''}
-              onChange={(e) =>
-                dispatch(setProfileFirstName(e.nativeEvent.text))
-              }
-            />
-          </View>
+          <TouchableWithoutFeedback
+            style={styles.item}
+            onPress={() => firstNameInputRef.current?.focus()}>
+            <>
+              <Text style={styles.itemText}>First Name:</Text>
+              <TextInput
+                style={styles.itemInput}
+                value={firstName || ''}
+                ref={firstNameInputRef}
+                onChange={(e) =>
+                  dispatch(setProfileFirstName(e.nativeEvent.text))
+                }
+              />
+            </>
+          </TouchableWithoutFeedback>
           <Text style={styles.item}>Last Name: {lastName}</Text>
           <Text style={styles.item}>Username: {username}</Text>
           <Text style={styles.item}>Location: {location}</Text>
@@ -69,24 +77,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   item: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'stretch',
     marginBottom: 10,
   },
   itemLast: {
     marginBottom: 0,
   },
+  itemHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   itemText: {
     paddingRight: 5,
-    fontSize: 18,
+    fontSize: 16,
     lineHeight: 24,
+    color: 'gray',
   },
   itemInput: {
-    padding: 1,
+    paddingBottom: Platform.OS === 'ios' ? 6 : 0,
+    paddingTop: Platform.OS === 'ios' ? 1 : 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    width: '100%',
     fontSize: 18,
     lineHeight: 24,
-    color: 'black',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
   },
 });
 
